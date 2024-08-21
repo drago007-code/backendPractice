@@ -1,0 +1,22 @@
+{
+  "name": "backendpractice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drago007-code/backendPractice.git"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "Ihtsham",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drago007-code/backendPractice/issues"
+  },
+  "homepage": "https://github.com/drago007-code/backendPractice#readme"
+}
