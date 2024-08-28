@@ -16,7 +16,9 @@ import fs from "fs"
              const response=  await cloudinary.uploader.upload(localfilepath,{
                 resource_type:"auto"
             })
-            console.log("file succcessfully uploaded", response.url);
+            //console.log(response)
+            //console.log("file succcessfully uploaded", response.url);
+            fs.unlinkSync(localfilepath)
             return response;
             }
          catch (error) {
@@ -27,4 +29,4 @@ import fs from "fs"
 
     }
 
-export{cloudinary}
+export{uploadOnCloudinary}
