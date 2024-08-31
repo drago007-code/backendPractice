@@ -86,55 +86,56 @@ const registeruser = asynchandler(async (req, res) => {
 })
 
 const loginUser = asynchandler(async(req , res)=>{
-      // req body -> data
-    // username or email
-    //find the user
-    //password check
-    //access and referesh token
-    //send cookie
-    const{email, username,password}=req.body
-    if(!(username||email)){
-        throw new ApiError(201,"username or email required");
-        
-    }
+    // req body -> data
+  // username or email
+  //find the user
+  //password check
+  //access and referesh token
+  //send cookie
+  const{email, username,password}=req.body
+  if(!(username||email)){
+      throw new ApiError(201,"username or email required");
+      
+  }
 
-    const user = await User.findOne({
-        $or: [{username}, {email}]
-    })
-    if(!user){
-        throw new ApiError(200,"user does not exist")
-    }
-    const validpassword=user.isPasswordCorrect(password);
-    if (!validpassword) {
-        throw new ApiError(400,"Password is not correct");
-        
-        
-    }
-    const{accessToken,refreshToken}=await generateAccessAndRefereshTokens(user._id)
+  const user = await User.findOne({
+      $or: [{username}, {email}]
+  })
+  if(!user){
+      throw new ApiError(200,"user does not exist")
+  }
+  const validpassword=user.isPasswordCorrect(password);
+  if (!validpassword) {
+      throw new ApiError(400,"Password is not correct");
+      
+      
+  }
+  const{accessToken,refreshToken}=await generateAccessAndRefereshTokens(user._id)
 
-    const loggedInUser=await User.findById(user._id).select("-password -refreshToken")
+  const loggedInUser=await User.findById(user._id).select("-password -refreshToken")
 
-    const options={
-        httpOnly:true,
-        secure:true
+  const options={
+      httpOnly:true,
+      secure:true
 
-    }
+  }
 
-    return res.status(200).cookie("accessToken",accessToken,options)
-    .cookie("refreshToken",refreshToken,options)
-    .json(
-        new ApiResponse( 
-            200,
-            {
-                user:loggedInUser,accessToken,refreshToken
-            },
-            "user loggedIn")
-       
-    )
+  return res.status(200).cookie("accessToken",accessToken,options)
+  .cookie("refreshToken",refreshToken,options)
+  .json(
+      new ApiResponse( 
+          200,
+          {
+              user:loggedInUser,accessToken,refreshToken
+          },
+          "user loggedIn")
+     
+  )
 
 
-    
+  
 })
+
 const loggedOut=asynchandler(async(req,res)=>{
     User.findByIdAndUpdate(
         req.user._id,
